@@ -1,0 +1,9 @@
+<x-splade-modal class="font-main">
+    <h1 class="text-2xl font-bold mb-4">Edit {{ title }} #{{$model->id}}</h1>
+
+    <x-splade-form class="flex flex-col space-y-4" action="{{route('{{ table }}.update', $model->id)}}" method="post" :default="$model">
+        {{ cols }}
+
+        <x-splade-submit label="Update {{ title }}" :spinner="true" />
+    </x-splade-form>
+</x-splade-modal>

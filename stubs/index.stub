@@ -1,0 +1,84 @@
+<x-app-layout>
+    <x-slot name="header">
+        <div class="flex justify-between">
+            <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+                {{ __('{{ title }}') }}
+            </h2>
+            <div>
+                <Link href="/admin/{{ table }}/create" class="px-2 text-white py-2 px-6 rounded-lg bg-blue-600 " slideover> Create {{ title }} </Link>
+            </div>
+        </div>
+    </x-slot>
+
+    <div class="py-12" v-cloak>
+        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
+                <div class="p-6 bg-white border-b border-gray-200">
+                    <div class="overflow-y-scroll">
+                        @if({{ modelClass }}::count())
+                        <x-splade-table :for="$table" striped>
+                            <x-splade-cell actions>
+                                <div class="flex justify-start">
+                                    <Link href="/{{ table }}/{{ $item->id }}" class="px-2 text-blue-500" slideover>
+                                        <div class="flex justify-start space-x-2">
+                                            <x-heroicon-o-eye class="h-4 w-4"/>
+                                            <span>View</span>
+                                        </div>
+                                    </Link>
+                                    <Link href="/{{ table }}/{{ $item->id }}/edit" class="px-2 text-yellow-400" slideover>
+                                        <div class="flex justify-start space-x-2">
+                                            <x-heroicon-o-pencil class="h-4 w-4"/>
+                                            <span>Edit</span>
+                                        </div>
+                                    </Link>
+                                    <Link href="/{{ table }}/{{ $item->id }}"
+                                          confirm="Enter the danger zone..."
+                                          confirm-text="Are you sure?"
+                                          confirm-button="Yes, take me there!"
+                                          cancel-button="No, keep me save!"
+                                          class="px-2 text-red-500"
+                                          method="delete"
+
+                                    >
+                                        <div class="flex justify-start space-x-2">
+                                            <x-heroicon-o-trash class="h-4 w-4"/>
+                                            <span>Delete</span>
+                                        </div>
+                                    </Link>
+                                </div>
+                            </x-splade-cell>
+                        </x-splade-table>
+                         @else
+                        <div class="relative text-center">
+                            <div class="flex items-center justify-center">
+                                <div
+                                    class="flex flex-col items-center justify-center flex-1 p-6 mx-auto space-y-6 text-center bg-white filament-tables-empty-state dark:bg-gray-800 rounded-lg shadow-sm">
+                                    <div
+                                        class="flex items-center justify-center w-16 h-16 rounded-full text-primary-500 bg-primary-50 dark:bg-gray-700">
+                                        <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
+                                             stroke="currentColor" aria-hidden="true">
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"></path>
+                                        </svg>
+                                    </div>
+
+                                    <div class="max-w-md space-y-1">
+                                        <h2 class="text-xl font-bold tracking-tight filament-tables-empty-state-heading dark:text-white">
+                                            {{ trans('tomato-admin::global.empty') }}
+                                        </h2>
+
+                                        <p
+                                            class="text-sm font-medium text-gray-500 whitespace-normal filament-tables-empty-state-description dark:text-gray-400">
+
+                                        </p>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    @endif
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</x-app-layout>
