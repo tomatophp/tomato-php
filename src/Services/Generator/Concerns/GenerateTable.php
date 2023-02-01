@@ -44,6 +44,9 @@ trait GenerateTable
             else if($item['name'] === 'email'){
                 $searchable .= "'{$item['name']}',";
             }
+            else if($item['type'] === 'relation'){
+                $searchable .= "'".Str::remove('_id', $item['name']).".".$item['relation']['relationColumn']."',";
+            }
         }
 
         return $searchable;
@@ -57,12 +60,26 @@ trait GenerateTable
                 if($key!== 0){
                     $cols .= "            ";
                 }
-                $cols .= "->column(label: '".Str::ucfirst($item['name'])."', sortable: true)";
+                $cols .= $this->checkColumnForRelation($item);
                 if($key!== count($this->cols)-1){
                     $cols .= PHP_EOL;
                 }
             }
         }
         return $cols;
+    }
+    private function checkColumnForRelation(array $item){
+        $column="->column(
+                label: '".Str::ucfirst($item['name'])."',
+                key: '".$item['name']."',
+                sortable: true)";
+            if ($item['type']== 'relation'){
+                $column= "->column(
+                label: __('".Str::remove('_id',Str::ucfirst($item['name']))."'),
+                key: '".Str::remove('_id', $item['name']).".".$item['relation']['relationColumn']."',
+                sortable: true,
+                searchable: true)";
+            }
+        return $column;
     }
 }

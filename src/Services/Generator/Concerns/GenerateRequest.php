@@ -75,6 +75,9 @@ trait GenerateRequest
                 if($item['type'] === 'password'){
                     $rules .= '|confirmed|min:6';
                 }
+                if($item['type'] === 'relation'){
+                    $rules .= '|exists:'.$item['relation']['table'].',id';
+                }
 
                 $rules .= "'";
                 if (($key !== count($this->cols) - 1)) {
