@@ -15,12 +15,10 @@ use TomatoPHP\TomatoPHP\Services\Generator\Concerns\GenerateForm;
 use TomatoPHP\TomatoPHP\Services\Generator\Concerns\GenerateIndexView;
 use TomatoPHP\TomatoPHP\Services\Generator\Concerns\GenerateMenu;
 use TomatoPHP\TomatoPHP\Services\Generator\Concerns\GenerateModel;
-use TomatoPHP\TomatoPHP\Services\Generator\Concerns\GenerateModule;
 use TomatoPHP\TomatoPHP\Services\Generator\Concerns\GenerateRequest;
 use TomatoPHP\TomatoPHP\Services\Generator\Concerns\GenerateRoutes;
 use TomatoPHP\TomatoPHP\Services\Generator\Concerns\GenerateShowView;
 use TomatoPHP\TomatoPHP\Services\Generator\Concerns\GenerateTable;
-use TomatoPHP\TomatoPHP\Services\Generator\Concerns\GenerateView;
 
 class CRUDGenerator
 {

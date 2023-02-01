@@ -1,6 +1,6 @@
 <?php
 
-namespace Queents\TomatoPHP\Services;
+namespace TomatoPHP\TomatoPHP\Services;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Http\FormRequest;
@@ -10,7 +10,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\View\View;
 use ProtoneMedia\Splade\Facades\Toast;
-use Queents\TomatoPHP\Interfaces\TomatoBase;
+use TomatoPHP\TomatoPHP\Interfaces\TomatoBase;
 
 class Tomato implements TomatoBase
 {
