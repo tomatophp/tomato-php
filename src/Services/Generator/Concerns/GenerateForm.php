@@ -12,7 +12,7 @@ trait GenerateForm
         $form .= "<div class=\"flex justify-between\">".PHP_EOL;
         $form .= "              <div>".PHP_EOL;
         $form .= "                  <h3 class=\"text-lg font-bold\">".PHP_EOL;
-        $form .= "                      ".Str::ucfirst(str_replace('_', ' ', $name)).PHP_EOL;
+        $form .= "                      {{__('".Str::ucfirst(str_replace('_', ' ', $name))."')}}".PHP_EOL;
         $form .= "                  </h3>".PHP_EOL;
         $form .= "              </div>".PHP_EOL;
         $form .= "              <div>".PHP_EOL;
