@@ -76,8 +76,21 @@ trait GenerateCols
                     $componentData['relation'] = [
                         "table" => $getKey->getForeignTableName(),
                         "field" => $getKey->getForeignColumns()[0],
-                        "model" => $model
+                        "model" => $model,
+                        'relationColumn'=>'id',
+                        'relationColumnType'=>'text'
                     ];
+
+                    $relationTableColumns=\Illuminate\Support\Facades\Schema::getColumnListing($componentData['relation']['table']);
+                    if (array_search('name',$relationTableColumns))
+                        $componentData['relation']['relationColumn']='name';
+                    elseif (array_search('title',$relationTableColumns))
+                        $componentData['relation']['relationColumn']='title';
+
+                    try {
+                        $componentData['relation']['relationColumnType']=\Illuminate\Support\Facades\Schema::getColumnType($componentData['relation']['table'],$componentData['relation']['relationColumn']);
+                    }catch (\Exception $e) {}
+                    
                     $componentData['type'] = 'relation';
                 }
             }
@@ -105,6 +118,7 @@ trait GenerateCols
             $components[] = $componentData;
         }
 
+//        dd($components);
         return $components;
     }
 }
