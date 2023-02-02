@@ -20,7 +20,7 @@ trait GenerateTable
                 "namespace" => $this->moduleName ? "Modules\\".$this->moduleName."\\Tables" : "App\\Tables",
             ],
             [
-                $this->moduleName ? module_path($this->moduleName)."/Tables" : ("Tables")
+                $this->moduleName ? module_path($this->moduleName)."/Tables" : app_path("Tables")
             ]
         );
     }

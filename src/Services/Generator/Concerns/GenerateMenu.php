@@ -15,7 +15,7 @@ trait GenerateMenu
                 "group" => $this->moduleName ? $this->moduleName : $this->modelName,
                 "name" => $this->modelName,
                 "table" => ucfirst(str_replace('_', ' ', $this->tableName)),
-                "index" => "admin.". $this->tableName . ".index",
+                "index" => "admin.". str_replace('_', '-', $this->tableName) . ".index",
                 "namespace" =>  $this->moduleName ? "Modules\\".$this->moduleName. "\\Menus" : "App\\Menus"
             ],
             [

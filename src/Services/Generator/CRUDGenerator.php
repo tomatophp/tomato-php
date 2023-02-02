@@ -4,6 +4,7 @@ namespace TomatoPHP\TomatoPHP\Services\Generator;
 
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\DriverManager;
+use Doctrine\DBAL\Exception;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Str;
 use TomatoPHP\ConsoleHelpers\Traits\HandleStub;
@@ -11,6 +12,7 @@ use TomatoPHP\TomatoPHP\Services\Generator\Concerns\GenerateCols;
 use TomatoPHP\TomatoPHP\Services\Generator\Concerns\GenerateController;
 use TomatoPHP\TomatoPHP\Services\Generator\Concerns\GenerateCreateView;
 use TomatoPHP\TomatoPHP\Services\Generator\Concerns\GenerateEditView;
+use TomatoPHP\TomatoPHP\Services\Generator\Concerns\GenerateFolders;
 use TomatoPHP\TomatoPHP\Services\Generator\Concerns\GenerateForm;
 use TomatoPHP\TomatoPHP\Services\Generator\Concerns\GenerateIndexView;
 use TomatoPHP\TomatoPHP\Services\Generator\Concerns\GenerateMenu;
@@ -30,6 +32,7 @@ class CRUDGenerator
     use HandleStub;
 
     //Generate Classes
+    use GenerateFolders;
     use GenerateCols;
     use GenerateModel;
     use GenerateTable;
@@ -49,6 +52,11 @@ class CRUDGenerator
 
     private Connection $connection;
 
+    /**
+     * @param string $tableName
+     * @param string|bool|null $moduleName
+     * @throws Exception
+     */
     public function __construct(
         private string $tableName,
         private string | bool | null $moduleName
@@ -67,8 +75,12 @@ class CRUDGenerator
         $this->cols = $this->getCols();
     }
 
-    public function generate()
+    /**
+     * @return void
+     */
+    public function generate(): void
     {
+        $this->generateFolders();
         $this->generateModel();
         $this->generateTable();
         $this->generateRequest();

@@ -15,7 +15,7 @@ trait GenerateController
                 "name" => "{$this->modelName}Controller",
                 "model" => $this->moduleName ? "\\Modules\\".$this->moduleName."\\Entities\\".$this->modelName : "\\App\\Models\\".$this->modelName,
                 "title" => $this->modelName,
-                "table" => $this->tableName,
+                "table" => str_replace('_', '-', $this->tableName),
                 "requestNamespace" => $this->moduleName ? "\\Modules\\".$this->moduleName."\\Http\\Requests\\{$this->modelName}\\" : "\\App\\Http\\Requests\\Admin\\{$this->modelName}\\",
                 "tableClass" => $this->moduleName ? "\\Modules\\".$this->moduleName."\\Tables\\".$this->modelName."Table" : "\\App\\Tables\\".$this->modelName."Table",
                 "namespace" => $this->moduleName ? "Modules\\".$this->moduleName."\\Http\\Controllers": "App\\Http\\Controllers\\Admin",
