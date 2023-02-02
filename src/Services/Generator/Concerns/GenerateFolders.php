@@ -12,7 +12,7 @@ trait GenerateFolders
         if($this->moduleName){
             $folders = [
                 module_path($this->moduleName) ."/Http/Controllers/",
-                module_path($this->moduleName) . "/Resources/views/{$this->tableName}",
+                module_path($this->moduleName) . "/Resources/views/" . str_replace('_', '-', $this->tableName),
                 module_path($this->moduleName) . "/Menus",
                 module_path($this->moduleName) ."/Http/Requests",
                 module_path($this->moduleName) . "/Routes",
@@ -23,7 +23,7 @@ trait GenerateFolders
             $folders = [
                 app_path("Http/Controllers") . "/Admin",
                 resource_path("views") . '/admin',
-                resource_path("views") . '/admin/' . $this->tableName,
+                resource_path("views") . '/admin/' . str_replace('_', '-', $this->tableName),
                 app_path("Menus"),
                 app_path("Http/Requests") . "/Admin",
                 app_path("Http/Requests/Admin") . '/'.$this->modelName,

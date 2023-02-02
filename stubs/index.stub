@@ -5,7 +5,7 @@
                 {{ __('{{ title }}') }}
             </h2>
             <div>
-                <Link href="/admin/{{ table }}/create" class="px-2 text-white py-2 px-6 rounded-lg bg-blue-600 " slideover> __('Create') __('{{ title }}') </Link>
+                <Link href="/admin/{{ table }}/create" class="px-2 text-white py-2 px-6 rounded-lg bg-blue-600 " slideover> {{__('Create {{ title }}')}} </Link>
             </div>
         </div>
     </x-slot>

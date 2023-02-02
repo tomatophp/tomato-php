@@ -71,12 +71,12 @@ trait GenerateTable
     private function checkColumnForRelation(array $item){
         $column="->column(
                 key: '".$item['name']."',
-                label: __('".Str::ucfirst($item['name'])."'),
+                label: __('".Str::of($item['name'])->replace('_',' ')->ucfirst()."'),
                 sortable: true)";
             if ($item['type'] == 'relation'){
                 $column= "->column(
                 key: '".Str::remove('_id', $item['name']).".".$item['relation']['relationColumn']."',
-                label: __('".Str::remove('_id',Str::ucfirst($item['name']))."'),
+                label: __('".Str::of($item['name'])->remove('_id')->replace('_',' ')->ucfirst()."'),
                 sortable: true,
                 searchable: true)";
             }
