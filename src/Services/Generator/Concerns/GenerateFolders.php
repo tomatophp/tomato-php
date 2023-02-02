@@ -21,10 +21,12 @@ trait GenerateFolders
         }
         else {
             $folders = [
-                app_path("Http/Controllers/Admin"),
-                resource_path("views/{$this->tableName}"),
+                app_path("Http/Controllers") . "/Admin",
+                resource_path("views") . '/admin',
+                resource_path("views") . '/admin/' . $this->tableName,
                 app_path("Menus"),
-                app_path("Http/Requests/Admin/{$this->modelName}"),
+                app_path("Http/Requests") . "/Admin",
+                app_path("Http/Requests/Admin") . '/'.$this->modelName,
                 base_path("routes"),
                 app_path("Tables")
             ];
