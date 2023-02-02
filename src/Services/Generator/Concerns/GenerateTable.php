@@ -70,13 +70,13 @@ trait GenerateTable
     }
     private function checkColumnForRelation(array $item){
         $column="->column(
-                label: '".Str::ucfirst($item['name'])."',
                 key: '".$item['name']."',
+                label: __('".Str::ucfirst($item['name'])."'),
                 sortable: true)";
-            if ($item['type']== 'relation'){
+            if ($item['type'] == 'relation'){
                 $column= "->column(
-                label: __('".Str::remove('_id',Str::ucfirst($item['name']))."'),
                 key: '".Str::remove('_id', $item['name']).".".$item['relation']['relationColumn']."',
+                label: __('".Str::remove('_id',Str::ucfirst($item['name']))."'),
                 sortable: true,
                 searchable: true)";
             }

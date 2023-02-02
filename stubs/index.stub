@@ -5,7 +5,7 @@
                 {{ __('{{ title }}') }}
             </h2>
             <div>
-                <Link href="/admin/{{ table }}/create" class="px-2 text-white py-2 px-6 rounded-lg bg-blue-600 " slideover> Create {{ title }} </Link>
+                <Link href="/admin/{{ table }}/create" class="px-2 text-white py-2 px-6 rounded-lg bg-blue-600 " slideover> __('Create') __('{{ title }}') </Link>
             </div>
         </div>
     </x-slot>
@@ -22,13 +22,13 @@
                                     <Link href="/{{ table }}/{{ $item->id }}" class="px-2 text-blue-500" slideover>
                                         <div class="flex justify-start space-x-2">
                                             <x-heroicon-o-eye class="h-4 w-4"/>
-                                            <span>View</span>
+                                            <span>{{__('View')}}</span>
                                         </div>
                                     </Link>
                                     <Link href="/{{ table }}/{{ $item->id }}/edit" class="px-2 text-yellow-400" slideover>
                                         <div class="flex justify-start space-x-2">
                                             <x-heroicon-o-pencil class="h-4 w-4"/>
-                                            <span>Edit</span>
+                                            <span>{{__('Edit')}}</span>
                                         </div>
                                     </Link>
                                     <Link href="/{{ table }}/{{ $item->id }}"
@@ -42,7 +42,7 @@
                                     >
                                         <div class="flex justify-start space-x-2">
                                             <x-heroicon-o-trash class="h-4 w-4"/>
-                                            <span>Delete</span>
+                                            <span>{{__('Delete')}}</span>
                                         </div>
                                     </Link>
                                 </div>
