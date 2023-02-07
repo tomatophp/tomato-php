@@ -76,7 +76,7 @@ trait GenerateForm
                 }
                 else {
                     $itemLable=($item['relation']['relationColumnType'] == 'json')?'name.'.App::getLocale():'name';
-                    $form .= "<x-splade-select label=\"{{__('".Str::remove('_id',$item['name'])."')}}\" placeholder=\"".Str::ucfirst(str_replace('_', ' ', $item['name']))."\" name=\"".$item['name']."\" remote-url=\"/admin/".$item['relation']['table']."/api\" remote-root=\"model.data\" option-label=$itemLable option-value=\"id\" choices/>";
+                    $form .= "<x-splade-select label=\"{{__('".Str::remove('_id',$item['name'])."')}}\" placeholder=\"".Str::ucfirst(str_replace('_', ' ', $item['name']))."\" name=\"".$item['name']."\" remote-url=\"/admin/".$item['relation']['table']."/api\" remote-root=\"model.data\" option-label=$itemLable option-`value=`\"id\" choices/>";
                 }
             }
             if($item['type'] === 'date'){
@@ -108,7 +108,7 @@ trait GenerateForm
                     $form .= $this->generateViewItem($item['name']);
                 }
                 else {
-                    $form .= "<x-splade-checkbox label=\"{{__('".Str::ucfirst(str_replace('_', ' ', $item['name'])).")}}\" name=\"".$item['name']."\" value=\"".$item['default']."\" label=\"".Str::ucfirst(str_replace('_', ' ', $item['name']))."\" />";
+                    $form .= "<x-splade-checkbox label=\"{{__('".Str::ucfirst(str_replace('_', ' ', $item['name'])).")}}\" name=\"".$item['name']."\" label=\"".Str::ucfirst(str_replace('_', ' ', $item['name']))."\" />";
                 }
             }
             if($item['type'] === 'json' && ($item['name']== 'name' ||$item['name']== 'title'|| $item['name']== 'description')){
