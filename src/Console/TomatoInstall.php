@@ -56,8 +56,8 @@ class TomatoInstall extends Command
             if($moduleName){
                 if(class_exists(\Nwidart\Modules\Facades\Module::class)){
                     $check = \Nwidart\Modules\Facades\Module::find($moduleName);
-                    $this->info("🍅 Module not found but we will create it for you ");
                     if(!$check){
+                        $this->info("🍅 Module not found but we will create it for you ");
                         $this->artisanCommand(["module:make", $moduleName]);
                     }
                 }
