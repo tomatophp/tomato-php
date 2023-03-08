@@ -76,7 +76,7 @@ trait GenerateForm
                     $form .= $this->generateViewItem(Str::remove('_id',$item['name']),Str::remove('_id',Str::ucfirst($item['name']))."->".$item['relation']['relationColumn']);
                 }
                 else {
-                    $itemLable=($item['relation']['relationColumnType'] == 'json')?'name.'.App::getLocale():'name';
+                    $itemLable=($item['relation']['relationColumnType'] == 'json')?'name.'.app()->getLocale():'name';
                     $form .= "<x-splade-select label=\"{{__('".Str::remove('_id',$item['name'])."')}}\" placeholder=\"".Str::ucfirst(str_replace('_', ' ', $item['name']))."\" name=\"".$item['name']."\" remote-url=\"/admin/".$item['relation']['table']."/api\" remote-root=\"model.data\" option-label=$itemLable option-value=\"id\" choices/>";
                 }
             }

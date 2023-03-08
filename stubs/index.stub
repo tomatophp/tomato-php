@@ -17,6 +17,7 @@
                     <div class="overflow-y-scroll">
                         @if({{ modelClass }}::count())
                         <x-splade-table :for="$table" striped>
+                            {{ bool }}
                             <x-splade-cell actions>
                                 <div class="flex justify-start">
                                     <Link href="/{{ table }}/{{ $item->id }}" class="px-2 text-blue-500" slideover>
