@@ -139,39 +139,40 @@ class Tomato implements TomatoBase
         $model->update($request->all());
 
         if($hasMedia){
-            $model->clearMediaCollection($collection);
-            if($multi){
-                foreach ($request->{$collection} as $item) {
-                    if(!is_string($item)){
-                        if($item->getClientOriginalName() === 'blob'){
-                            $model->addMedia($item)
-                                ->usingFileName(strtolower(Str::random(10).'_'.$collection.'.'.$item->extension()))
-                                ->preservingOriginal()
-                                ->toMediaCollection($collection);
-                        }
-                        else {
-                            $model->addMedia($item)
-                                ->preservingOriginal()
-                                ->toMediaCollection($collection);
+            if($request->{$collection} ){
+                $model->clearMediaCollection($collection);
+                if($multi){
+                    foreach ($request->{$collection} as $item) {
+                        if(!is_string($item)){
+                            if($item->getClientOriginalName() === 'blob'){
+                                $model->addMedia($item)
+                                    ->usingFileName(strtolower(Str::random(10).'_'.$collection.'.'.$item->extension()))
+                                    ->preservingOriginal()
+                                    ->toMediaCollection($collection);
+                            }
+                            else {
+                                $model->addMedia($item)
+                                    ->preservingOriginal()
+                                    ->toMediaCollection($collection);
+                            }
                         }
                     }
                 }
-            }
-            else {
-                if($request->{$collection}->getClientOriginalName() === 'blob'){
-                    $model->addMedia($request->{$collection})
-                        ->usingFileName(strtolower(Str::random(10).'_'.$collection.'.'.$request->{$collection}->extension()))
-                        ->preservingOriginal()
-                        ->toMediaCollection($collection);
-                }
                 else {
-                    $model->addMedia($request->{$collection})
-                        ->preservingOriginal()
-                        ->toMediaCollection($collection);
+                    if($request->{$collection}->getClientOriginalName() === 'blob'){
+                        $model->addMedia($request->{$collection})
+                            ->usingFileName(strtolower(Str::random(10).'_'.$collection.'.'.$request->{$collection}->extension()))
+                            ->preservingOriginal()
+                            ->toMediaCollection($collection);
+                    }
+                    else {
+                        $model->addMedia($request->{$collection})
+                            ->preservingOriginal()
+                            ->toMediaCollection($collection);
+                    }
+
                 }
-
             }
-
         }
 
         Toast::title($message)->success()->autoDismiss(2);
