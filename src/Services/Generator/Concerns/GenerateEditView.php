@@ -16,7 +16,7 @@ trait GenerateEditView
 
         $this->generateStubs(
             $this->stubPath . "edit.stub",
-            $this->moduleName ? module_path($this->moduleName) . "/Resources/views/{$this->tableName}/edit.blade.php" : resource_path("views/admin/{$this->tableName}/edit.blade.php"),
+            $this->moduleName ? module_path($this->moduleName) . "/Resources/views/".str_replace('_', '-', $this->tableName)."/edit.blade.php" : resource_path("views/admin/{$this->tableName}/edit.blade.php"),
             [
                 "title" => $this->modelName,
                 "table" => str_replace('_', '-', $this->tableName),
