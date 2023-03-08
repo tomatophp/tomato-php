@@ -16,7 +16,7 @@ trait GenerateCreateView
 
         $this->generateStubs(
             $this->stubPath . "create.stub",
-            $this->moduleName ? module_path($this->moduleName) . "/Resources/views/{$this->tableName}/create.blade.php" : resource_path("views/admin/{$this->tableName}/create.blade.php"),
+            $this->moduleName ? module_path($this->moduleName) . "/Resources/views/".str_replace('_', '-', $this->tableName)."/create.blade.php" : resource_path("views/admin/{$this->tableName}/create.blade.php"),
             [
                 "title" => $this->modelName,
                 "table" => str_replace('_', '-', $this->tableName),

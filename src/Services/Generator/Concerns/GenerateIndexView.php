@@ -15,7 +15,7 @@ trait GenerateIndexView
         }
         $this->generateStubs(
             $this->stubPath . "index.stub",
-            $this->moduleName ? module_path($this->moduleName) . "/Resources/views/{$this->tableName}/index.blade.php" : resource_path("views/admin/{$this->tableName}/index.blade.php"),
+            $this->moduleName ? module_path($this->moduleName) . "/Resources/views/".str_replace('_', '-', $this->tableName)."/index.blade.php" : resource_path("views/admin/{$this->tableName}/index.blade.php"),
             [
                 "title" => $this->modelName,
                 "table" => str_replace('_', '-', $this->tableName),
