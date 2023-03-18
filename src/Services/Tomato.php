@@ -70,17 +70,22 @@ class Tomato implements TomatoBase
         $record = $model::create($request->all());
 
         if($hasMedia){
+            
             if($multi){
-                foreach ($request->{$collection} as $item) {
-                    $record->addMedia($item)
-                        ->preservingOriginal()
-                        ->toMediaCollection($collection);
+                if(count($request->get($collection))){
+                    foreach ($request->{$collection} as $item) {
+                        $record->addMedia($item)
+                            ->preservingOriginal()
+                            ->toMediaCollection($collection);
+                    }
                 }
             }
             else {
-                $record->addMedia($request->{$collection})
+                if($request->hasFile($collection)){
+                    $record->addMedia($request->{$collection})
                     ->preservingOriginal()
                     ->toMediaCollection($collection);
+                }
             }
         }
 
@@ -142,35 +147,38 @@ class Tomato implements TomatoBase
             if($request->{$collection} ){
                 $model->clearMediaCollection($collection);
                 if($multi){
-                    foreach ($request->{$collection} as $item) {
-                        if(!is_string($item)){
-                            if($item->getClientOriginalName() === 'blob'){
-                                $model->addMedia($item)
-                                    ->usingFileName(strtolower(Str::random(10).'_'.$collection.'.'.$item->extension()))
-                                    ->preservingOriginal()
-                                    ->toMediaCollection($collection);
-                            }
-                            else {
-                                $model->addMedia($item)
-                                    ->preservingOriginal()
-                                    ->toMediaCollection($collection);
+                    if($request->has($collection) && count($request->get($collection))){
+                        foreach ($request->{$collection} as $item) {
+                            if(!is_string($item)){
+                                if($item->getClientOriginalName() === 'blob'){
+                                    $model->addMedia($item)
+                                        ->usingFileName(strtolower(Str::random(10).'_'.$collection.'.'.$item->extension()))
+                                        ->preservingOriginal()
+                                        ->toMediaCollection($collection);
+                                }
+                                else {
+                                    $model->addMedia($item)
+                                        ->preservingOriginal()
+                                        ->toMediaCollection($collection);
+                                }
                             }
                         }
                     }
                 }
                 else {
-                    if($request->{$collection}->getClientOriginalName() === 'blob'){
-                        $model->addMedia($request->{$collection})
-                            ->usingFileName(strtolower(Str::random(10).'_'.$collection.'.'.$request->{$collection}->extension()))
-                            ->preservingOriginal()
-                            ->toMediaCollection($collection);
+                    if($request->has($collection)){
+                        if($request->{$collection}->getClientOriginalName() === 'blob'){
+                            $model->addMedia($request->{$collection})
+                                ->usingFileName(strtolower(Str::random(10).'_'.$collection.'.'.$request->{$collection}->extension()))
+                                ->preservingOriginal()
+                                ->toMediaCollection($collection);
+                        }
+                        else {
+                            $model->addMedia($request->{$collection})
+                                ->preservingOriginal()
+                                ->toMediaCollection($collection);
+                        }
                     }
-                    else {
-                        $model->addMedia($request->{$collection})
-                            ->preservingOriginal()
-                            ->toMediaCollection($collection);
-                    }
-
                 }
             }
         }
