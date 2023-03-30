@@ -67,9 +67,11 @@ class TomatoInstall extends Command
             }
         }
 
+        $isBuilder=$this->ask('🍅 Do you went to use Form Builder? (form/file)', 'form');
+        
         //Generate CRUD Service
         try {
-            $resourceGenerator = new CRUDGenerator(tableName:$tableName,moduleName:$moduleName);
+            $resourceGenerator = new CRUDGenerator(tableName:$tableName,moduleName:$moduleName,isBuilder: $isBuilder);
             $resourceGenerator->generate();
             $this->info('🍅 CRUD Has Been Generated Success');
         }catch (\Exception $e){
@@ -77,4 +79,5 @@ class TomatoInstall extends Command
             return;
         }
     }
+    
 }

@@ -14,6 +14,7 @@ use TomatoPHP\TomatoPHP\Services\Generator\Concerns\GenerateCreateView;
 use TomatoPHP\TomatoPHP\Services\Generator\Concerns\GenerateEditView;
 use TomatoPHP\TomatoPHP\Services\Generator\Concerns\GenerateFolders;
 use TomatoPHP\TomatoPHP\Services\Generator\Concerns\GenerateForm;
+use TomatoPHP\TomatoPHP\Services\Generator\Concerns\GenerateFormView;
 use TomatoPHP\TomatoPHP\Services\Generator\Concerns\GenerateIndexView;
 use TomatoPHP\TomatoPHP\Services\Generator\Concerns\GenerateMenu;
 use TomatoPHP\TomatoPHP\Services\Generator\Concerns\GenerateModel;
@@ -47,6 +48,7 @@ class CRUDGenerator
     use GenerateIndexView;
     use GenerateShowView;
     use GenerateCreateView;
+    use GenerateFormView;
     use GenerateEditView;
     use GenerateMenu;
 
@@ -59,7 +61,8 @@ class CRUDGenerator
      */
     public function __construct(
         private string $tableName,
-        private string | bool | null $moduleName
+        private string | bool | null $moduleName,
+        private string $isBuilder
     ){
         $connectionParams = [
             'dbname' => config('database.connections.mysql.database'),
@@ -84,11 +87,18 @@ class CRUDGenerator
         $this->generateModel();
         $this->generateTable();
         $this->generateRequest();
-        $this->generateController();
+        ($this->isBuilder == 'form')?$this->generateControllerForBuilder():$this->generateController();
         $this->generateRoutes();
         $this->generateIndexView();
-        $this->generateCreateView();
-        $this->generateEditView();
+        if ($this->isBuilder == 'form'){
+            $this->generateFormView();
+            $this->generateFormBuilderClass();
+
+        }else{
+            $this->generateCreateView();
+            $this->generateEditView();
+        }
+
         $this->generateShowView();
         $this->generateMenu();
     }
