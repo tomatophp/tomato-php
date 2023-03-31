@@ -42,7 +42,7 @@
         "tomatophp/console-helpers": "^1.0",
         "blade-ui-kit/blade-heroicons": "^2.0",
         "maatwebsite/excel": "^3.1",
-        "krlove/eloquent-model-generator": "^2.0",
+        "tomatophp/tomato-model-generator": "^1.0",
         "spatie/laravel-medialibrary": "^10.7"
     }
 }
