@@ -10,7 +10,6 @@ use TomatoPHP\TomatoPHP\Services\Generator\CRUDGenerator;
 
 class TomatoInstall extends Command
 {
-
     use RunCommand;
     /**
      * The name and signature of the console command.
@@ -34,10 +33,10 @@ class TomatoInstall extends Command
     {
         //Get Table Name
         $check = true;
-        while ($check){
+        while ($check) {
             $tableName = $this->ask('🍅 Please input your table name you went to create CRUD? (ex: users)');
 
-            if(\Illuminate\Support\Facades\Schema::hasTable($tableName)){
+            if (\Illuminate\Support\Facades\Schema::hasTable($tableName)) {
                 $check = false;
             }
             else {
@@ -46,38 +45,37 @@ class TomatoInstall extends Command
         }
 
         //Check if user need to use HMVC
-        $isModule=$this->ask('🍅 Do you went to use HMVC module? (y/n)', 'y');
-        if(!$isModule){
+        $isModule = $this->ask('🍅 Do you went to use HMVC module? (y/n)', 'y');
+        if (!$isModule) {
             $isModule = 'y';
         }
-        $moduleName= false;
-        if($isModule === 'y'){
-            $moduleName=$this->ask('🍅 Please input your module name? (ex: Translations)');
-            if($moduleName){
-                if(class_exists(\Nwidart\Modules\Facades\Module::class)){
+        $moduleName = false;
+        if ($isModule === 'y'){
+            $moduleName = $this->ask('🍅 Please input your module name? (ex: Translations)');
+            if ($moduleName){
+                if (class_exists(\Nwidart\Modules\Facades\Module::class)){
                     $check = \Nwidart\Modules\Facades\Module::find($moduleName);
-                    if(!$check){
-                        $this->info("🍅 Module not found but we will create it for you ");
+                    if (!$check) {
+                        $this->info('🍅 Module not found but we will create it for you');
                         $this->artisanCommand(["module:make", $moduleName]);
                     }
                 }
                 else {
-                    $this->error("🍅 Sorry nwidart/laravel-modules not installed please install it first");
+                    $this->error('🍅 Sorry nwidart/laravel-modules not installed please install it first');
                 }
             }
         }
 
-        $isBuilder=$this->ask('🍅 Do you went to use Form Builder? (form/file)', 'form');
+        $isBuilder = $this->ask('🍅 Do you went to use Form Builder? (form/file)', 'form');
         
         //Generate CRUD Service
         try {
             $resourceGenerator = new CRUDGenerator(tableName:$tableName,moduleName:$moduleName,isBuilder: $isBuilder);
             $resourceGenerator->generate();
             $this->info('🍅 CRUD Has Been Generated Success');
-        }catch (\Exception $e){
+        } catch (\Exception $e) {
             $this->error($e->getMessage());
             return;
         }
     }
-    
 }
