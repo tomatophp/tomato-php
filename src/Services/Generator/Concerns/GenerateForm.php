@@ -9,24 +9,7 @@ trait GenerateForm
 {
     private function generateViewItem(string $name,string $value=null): string
     {
-        $form = "";
-        $form .= "<div class=\"flex justify-between\">".PHP_EOL;
-        $form .= "              <div>".PHP_EOL;
-        $form .= "                  <h3 class=\"text-lg font-bold\">".PHP_EOL;
-        $form .= "                      {{__('".Str::ucfirst(str_replace('_', ' ', $name))."')}}".PHP_EOL;
-        $form .= "                  </h3>".PHP_EOL;
-        $form .= "              </div>".PHP_EOL;
-        $form .= "              <div>".PHP_EOL;
-        $form .= "                  <h3 class=\"text-lg\">".PHP_EOL;
-        if ($value)
-            $form .= '                      {{ $model->'.$value . "}}".PHP_EOL;
-        else
-            $form .= '                      {{ $model->'.$name . "}}".PHP_EOL;
-
-        $form .= "                  </h3>".PHP_EOL;
-        $form .= "              </div>".PHP_EOL;
-        $form .= "          </div>".PHP_EOL;
-
+        $form = '<x-tomato-admin-row label="{{__("'.Str::ucfirst(str_replace('_', ' ', $name)).'")}}" :value="$model->".$value?:$name."" />'.PHP_EOL;
         return $form;
     }
 
@@ -48,9 +31,9 @@ trait GenerateForm
                     $form .= $this->generateViewItem($item['name']);
                 }
                 else {
-                    $form .= "<x-splade-input label=\"{{__('".Str::ucfirst(str_replace('_', ' ', $item['name']))."')}}\" name=\"{$item['name']}\" type=\"".$type."\"  placeholder=\"".Str::ucfirst(str_replace('_', ' ', $item['name']))."\" />";
+                    $form .= "<x-splade-input :label=\"__('".Str::ucfirst(str_replace('_', ' ', $item['name']))."')\" name=\"{$item['name']}\" type=\"".$type."\"  :placeholder=\"__('".Str::ucfirst(str_replace('_', ' ', $item['name']))."')\" />";
                     if($item['name'] === 'password'){
-                        $form .= PHP_EOL."          <x-splade-input name=\"{$item['name']}_confirmation\" type=\"".$type."\"  placeholder=\"".Str::ucfirst(str_replace('_', ' ', $item['name']))." Confirmation\" />";
+                        $form .= PHP_EOL."          <x-splade-input name=\"{$item['name']}_confirmation\" :label=\"__('".Str::ucfirst(str_replace('_', ' ', $item['name']))." Confirmation')\" type=\"".$type."\"  :placeholder=\"__('".Str::ucfirst(str_replace('_', ' ', $item['name']))." Confirmation')\" />";
                     }
                 }
             }
@@ -59,7 +42,15 @@ trait GenerateForm
                     $form .= $this->generateViewItem($item['name']);
                 }
                 else {
-                    $form .= "<x-splade-textarea label=\"{{__('".Str::ucfirst(str_replace('_', ' ', $item['name']))."')}}\" name=\"{$item['name']}\" placeholder=\"".Str::ucfirst(str_replace('_', ' ', $item['name']))."\" autosize />";
+                    $form .= "<x-splade-textarea :label=\"__('".Str::ucfirst(str_replace('_', ' ', $item['name']))."')\" name=\"{$item['name']}\" :placeholder=\"__('".Str::ucfirst(str_replace('_', ' ', $item['name']))."')\" autosize />";
+                }
+            }
+            if($item['type'] === 'longText'){
+                if($view){
+                    $form .= $this->generateViewItem($item['name']);
+                }
+                else {
+                    $form .= "<x-tomato-admin-rich :label=\"__('".Str::ucfirst(str_replace('_', ' ', $item['name']))."')\" name=\"{$item['name']}\" :placeholder=\"__('".Str::ucfirst(str_replace('_', ' ', $item['name']))."')\" autosize />";
                 }
             }
             if($item['type'] === 'int'){
@@ -67,7 +58,23 @@ trait GenerateForm
                     $form .= $this->generateViewItem($item['name']);
                 }
                 else {
-                    $form .= "<x-splade-input label=\"{{__('".Str::ucfirst(str_replace('_', ' ', $item['name']))."')}}\" type='number' name=\"{$item['name']}\" placeholder=\"".Str::ucfirst(str_replace('_', ' ', $item['name']))."\" />";
+                    $form .= "<x-splade-input :label=\"__('".Str::ucfirst(str_replace('_', ' ', $item['name']))."')\" :placeholder=\"__('".Str::ucfirst(str_replace('_', ' ', $item['name']))."')\" type='number' name=\"{$item['name']}\" />";
+                }
+            }
+            if($item['type'] === 'color'){
+                if($view){
+                    $form .= $this->generateViewItem($item['name']);
+                }
+                else {
+                    $form .= "<x-tomato-admin-color :label=\"__('".Str::ucfirst(str_replace('_', ' ', $item['name']))."')\" :placeholder=\"__('".Str::ucfirst(str_replace('_', ' ', $item['name']))."')\" type='number' name=\"{$item['name']}\" />";
+                }
+            }
+            if($item['type'] === 'tel'){
+                if($view){
+                    $form .= $this->generateViewItem($item['name']);
+                }
+                else {
+                    $form .= "<x-splade-input :label=\"__('".Str::ucfirst(str_replace('_', ' ', $item['name']))."')\" :placeholder=\"__('".Str::ucfirst(str_replace('_', ' ', $item['name']))."')\" type='tel' name=\"{$item['name']}\" />";
                 }
             }
             if($item['type'] === 'relation'){
@@ -77,7 +84,7 @@ trait GenerateForm
                 }
                 else {
                     $itemLable=($item['relation']['relationColumnType'] == 'json')?'name.'.app()->getLocale():'name';
-                    $form .= "<x-splade-select label=\"{{__('".Str::remove('_id',$item['name'])."')}}\" placeholder=\"".Str::ucfirst(str_replace('_', ' ', $item['name']))."\" name=\"".$item['name']."\" remote-url=\"/admin/".$item['relation']['table']."/api\" remote-root=\"model.data\" option-label=$itemLable option-value=\"id\" choices/>";
+                    $form .= "<x-splade-select :label=\"__('".Str::ucfirst(str_replace('_', ' ', $item['name']))."')\" :placeholder=\"__('".Str::ucfirst(str_replace('_', ' ', $item['name']))."')\" name=\"".$item['name']."\" remote-url=\"/admin/".$item['relation']['table']."/api\" remote-root=\"model.data\" option-label=$itemLable option-value=\"id\" choices/>";
                 }
             }
             if($item['type'] === 'date'){
@@ -85,7 +92,7 @@ trait GenerateForm
                     $form .= $this->generateViewItem($item['name']);
                 }
                 else {
-                    $form .= "<x-splade-input label=\"{{__('".Str::ucfirst(str_replace('_', ' ', $item['name']))."')}}\" placeholder=\"".Str::ucfirst(str_replace('_', ' ', $item['name']))."\" name=\"".$item['name']."\" date />";
+                    $form .= "<x-splade-input :label=\"__('".Str::ucfirst(str_replace('_', ' ', $item['name']))."')\" :placeholder=\"__('".Str::ucfirst(str_replace('_', ' ', $item['name']))."')\" name=\"".$item['name']."\" date />";
                 }
             }
             if($item['type'] === 'time'){
@@ -93,7 +100,7 @@ trait GenerateForm
                     $form .= $this->generateViewItem($item['name']);
                 }
                 else {
-                    $form .= "<x-splade-input label=\"{{__('".Str::ucfirst(str_replace('_', ' ', $item['name']))."')}}\" placeholder=\"".Str::ucfirst(str_replace('_', ' ', $item['name']))."\" name=\"".$item['name']."\" time=\"{ time_24hr: false }\" />";
+                    $form .= "<x-splade-input :label=\"__('".Str::ucfirst(str_replace('_', ' ', $item['name']))."')\" :placeholder=\"__('".Str::ucfirst(str_replace('_', ' ', $item['name']))."')\" name=\"".$item['name']."\" time=\"{ time_24hr: false }\" />";
                 }
             }
             if($item['type'] === 'datetime'){
@@ -101,7 +108,7 @@ trait GenerateForm
                     $form .= $this->generateViewItem($item['name']);
                 }
                 else {
-                    $form .= "<x-splade-input label=\"{{__('".Str::ucfirst(str_replace('_', ' ', $item['name']))."')}}\" placeholder=\"".Str::ucfirst(str_replace('_', ' ', $item['name']))."\" name=\"".$item['name']."\" date time=\"{ time_24hr: false }\" />";
+                    $form .= "<x-splade-input :label=\"__('".Str::ucfirst(str_replace('_', ' ', $item['name']))."')\" :placeholder=\"__('".Str::ucfirst(str_replace('_', ' ', $item['name']))."')\" name=\"".$item['name']."\" date time=\"{ time_24hr: false }\" />";
                 }
             }
             if($item['type'] === 'boolean'){
@@ -109,7 +116,7 @@ trait GenerateForm
                     $form .= $this->generateViewItem($item['name']);
                 }
                 else {
-                    $form .= "<x-splade-checkbox label=\"{{__('".Str::ucfirst(str_replace('_', ' ', $item['name']))."')}}\" name=\"".$item['name']."\" label=\"".Str::ucfirst(str_replace('_', ' ', $item['name']))."\" />";
+                    $form .= "<x-splade-checkbox :label=\"__('".Str::ucfirst(str_replace('_', ' ', $item['name']))."')\" name=\"".$item['name']."\" label=\"".Str::ucfirst(str_replace('_', ' ', $item['name']))."\" />";
                 }
             }
             if($item['type'] === 'json' && ($item['name']== 'name' ||$item['name']== 'title'|| $item['name']== 'description')){
@@ -117,9 +124,9 @@ trait GenerateForm
                     $form .= $this->generateViewItem($item['name']);
                 }
                 else {
-                    $form .= "<x-splade-input label=\"{{__('".Str::ucfirst(str_replace('_', ' ', $item['name']))."-en')}}\" placeholder=\"{{__('".Str::ucfirst(str_replace('_', ' ', $item['name']))."-en')}}\" name=\"".$item['name'].".en\" type='text' />";
+                    $form .= "<x-splade-input :label=\"__('".Str::ucfirst(str_replace('_', ' ', $item['name']))."-EN')\" :placeholder=\"__('".Str::ucfirst(str_replace('_', ' ', $item['name']))."-en')\" name=\"".$item['name'].".en\" type='text' />";
                     $form .= PHP_EOL;
-                    $form .= "<x-splade-input label=\"{{__('".Str::ucfirst(str_replace('_', ' ', $item['name']))."-ar')}}\" placeholder=\"{{__('".Str::ucfirst(str_replace('_', ' ', $item['name']))."-ar')}}\" name=\"".$item['name'].".ar\" type='text' />";
+                    $form .= "<x-splade-input :label=\"__('".Str::ucfirst(str_replace('_', ' ', $item['name']))."-AR')\" :placeholder=\"__('".Str::ucfirst(str_replace('_', ' ', $item['name']))."-ar')\" name=\"".$item['name'].".ar\" type='text' />";
 
                 }
             }

@@ -37,7 +37,6 @@ class CRUDGenerator
     use GenerateCols;
     use GenerateModel;
     use GenerateTable;
-    use GenerateRequest;
     use GenerateController;
     use GenerateRoutes;
 
@@ -50,7 +49,6 @@ class CRUDGenerator
     use GenerateCreateView;
     use GenerateFormView;
     use GenerateEditView;
-    use GenerateMenu;
 
     private Connection $connection;
 
@@ -74,7 +72,7 @@ class CRUDGenerator
 
         $this->connection = DriverManager::getConnection($connectionParams);
         $this->modelName = Str::ucfirst(Str::singular(Str::camel($this->tableName)));
-        $this->stubPath = config('tomato-php.stubs-path'). "/";
+        $this->stubPath = base_path(config('tomato-php.stubs-path')) . "/";
         $this->cols = $this->getCols();
     }
 
@@ -86,7 +84,6 @@ class CRUDGenerator
         $this->generateFolders();
         $this->generateModel();
         $this->generateTable();
-        $this->generateRequest();
         ($this->isBuilder == 'form')?$this->generateControllerForBuilder():$this->generateController();
         $this->generateRoutes();
         $this->generateIndexView();
@@ -98,9 +95,7 @@ class CRUDGenerator
             $this->generateCreateView();
             $this->generateEditView();
         }
-
         $this->generateShowView();
-        $this->generateMenu();
     }
 
 }

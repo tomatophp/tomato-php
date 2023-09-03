@@ -18,5 +18,7 @@ trait GenerateRoutes
             ],
             true
         );
+
+        \Laravel\Prompts\info("Routes Generate Success");
     }
 }

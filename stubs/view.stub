@@ -1,7 +1,15 @@
-<x-splade-modal class="font-main">
-    <h1 class="text-2xl font-bold mb-4">{{__('View {{ title }}')}} #{{$model->id}}</h1>
-
-    <div class="flex flex-col space-y-4">
+<x-tomato-admin-container label="{{trans('tomato-admin::global.crud.view')}} {{__('{{ table }}')}} #{{$model->id}}">
+    <div class="grid grid-cols-1 lg:grid-cols-2">
         {{ cols }}
     </div>
-</x-splade-modal>
+    <div class="flex justify-start gap-2 pt-3">
+        <x-tomato-admin-button warning label="{{__('Edit')}}" :href="route('admin.{{ table }}.edit', $model->id)"/>
+        <x-tomato-admin-button danger :href="route('admin.{{ table }}.destroy', $model->id)"
+                               confirm="{{trans('tomato-admin::global.crud.delete-confirm')}}"
+                               confirm-text="{{trans('tomato-admin::global.crud.delete-confirm-text')}}"
+                               confirm-button="{{trans('tomato-admin::global.crud.delete-confirm-button')}}"
+                               cancel-button="{{trans('tomato-admin::global.crud.delete-confirm-cancel-button')}}"
+                               method="delete"  label="{{__('Delete')}}" />
+        <x-tomato-admin-button secondary :href="route('admin.{{ table }}.index')" label="{{__('Cancel')}}"/>
+    </div>
+</x-tomato-admin-container>

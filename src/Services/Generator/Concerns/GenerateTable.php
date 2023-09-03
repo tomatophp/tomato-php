@@ -23,6 +23,8 @@ trait GenerateTable
                 $this->moduleName ? module_path($this->moduleName)."/Tables" : app_path("Tables")
             ]
         );
+
+        \Laravel\Prompts\info("Table Class Generate Success");
     }
 
     private function generateSearchable(): string
@@ -44,7 +46,7 @@ trait GenerateTable
             else if($item['name'] === 'email'){
                 $searchable .= "'{$item['name']}',";
             }
-            else if($item['type'] === 'relation'){
+            else if(($item['type'] === 'relation') && class_exists(Kirschbaum\PowerJoins\PowerJoins::class)){
                 $searchable .= "'".Str::remove('_id', $item['name']).".".$item['relation']['relationColumn']."',";
             }
         }
@@ -72,13 +74,15 @@ trait GenerateTable
         $column="->column(
                 key: '".$item['name']."',
                 label: __('".Str::of($item['name'])->replace('_',' ')->ucfirst()."'),
-                sortable: true)";
-            if ($item['type'] == 'relation'){
+                sortable: true
+            )";
+            if ($item['type'] == 'relation' && class_exists(Kirschbaum\PowerJoins\PowerJoins::class)){
                 $column= "->column(
                 key: '".Str::remove('_id', $item['name']).".".$item['relation']['relationColumn']."',
                 label: __('".Str::of($item['name'])->remove('_id')->replace('_',' ')->ucfirst()."'),
                 sortable: true,
-                searchable: true)";
+                searchable: true
+            )";
             }
         return $column;
     }

@@ -10,8 +10,6 @@ trait GenerateModel
     {
         //Check if model exists or not
 
-        $command = "config:clear";
-
         if($this->moduleName){
             if(!file_exists(module_path($this->moduleName) . '/Entities/'. $this->modelName . '.php')){
                 $command = 'krlove:generate:model ' . $this->modelName . ' --table-name=' . $this->tableName . ' --output-path=' . module_path($this->moduleName) . '/Entities' . ' --namespace=' . "Modules" . "\\\\" . $this->moduleName . "\\\\" . "Entities";
@@ -21,6 +19,9 @@ trait GenerateModel
             $command = 'krlove:generate:model ' . $this->modelName . ' --table-name=' . $this->tableName . ' --output-path=' . app_path('/Models') . ' --namespace=' . "\\App\\\\Models\\";
         }
 
-        Artisan::call($command);
+        if(isset($command))
+            Artisan::call($command);
+
+        \Laravel\Prompts\info("Model Generate Success");
     }
 }

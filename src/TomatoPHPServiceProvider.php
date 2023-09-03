@@ -3,7 +3,7 @@
 namespace TomatoPHP\TomatoPHP;
 
 use Illuminate\Support\ServiceProvider;
-use TomatoPHP\TomatoPHP\Console\TomatoInstall;
+use TomatoPHP\TomatoPHP\Console\TomatoGenerator;
 
 class TomatoPHPServiceProvider extends ServiceProvider
 {
@@ -20,7 +20,7 @@ class TomatoPHPServiceProvider extends ServiceProvider
         $this->loadTranslationsFrom(__DIR__.'/../resources/lang', 'tomato-php');
         $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
         $this->commands([
-            TomatoInstall::class
+            TomatoGenerator::class
         ]);
 
         //publish stubs to the base folder

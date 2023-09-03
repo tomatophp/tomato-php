@@ -1,5 +1,5 @@
 <?php
 
 return [
-    "stubs-path" => "vendors/tomatophp/tomato-php/stubs",
+    "stubs-path" => "vendor/tomatophp/tomato-php/stubs",
 ];

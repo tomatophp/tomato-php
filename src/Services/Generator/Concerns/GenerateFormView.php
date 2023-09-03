@@ -11,14 +11,14 @@ trait GenerateFormView
     {
         $folders = [];
         if ($this->moduleName) {
-            $folders[] = module_path($this->moduleName) . "/Resources/views/{$this->tableName}";
+            $folders[] = module_path($this->moduleName) . "/Resources/views/" . Str::replace('_', '-',$this->tableName);
         } else {
-            $folders[] = resource_path("views/{$this->tableName}");
+            $folders[] = resource_path("views/" . Str::replace('_', '-',$this->tableName));
         }
 
         $this->generateStubs(
             "vendor/tomatophp/tomato-php/stubs/FormBuilder/Form.stub",
-            $this->moduleName ? module_path($this->moduleName) . "/Resources/views/" . str_replace('_', '-', $this->tableName) . "/form.blade.php" : resource_path("views/admin/{$this->tableName}/form.blade.php"),
+            $this->moduleName ? module_path($this->moduleName) . "/Resources/views/" . str_replace('_', '-', $this->tableName) . "/form.blade.php" : resource_path("views/admin/".Str::replace('_', '-',$this->tableName)."/form.blade.php"),
             [
                 "title" => $this->modelName,
                 "table" => str_replace('_', '-', $this->tableName),
@@ -26,6 +26,8 @@ trait GenerateFormView
             ],
             $folders
         );
+
+        \Laravel\Prompts\info("Form Generate Success");
     }
 
     private function generateFormBuilderClass()
@@ -43,6 +45,8 @@ trait GenerateFormView
                 $this->moduleName ? module_path($this->moduleName) . "/Forms" : app_path("Forms")
             ]
         );
+
+        \Laravel\Prompts\info("Form Class Generate Success");
     }
 
     private function generateFormElements(): string
