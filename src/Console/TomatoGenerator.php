@@ -48,18 +48,19 @@ class TomatoGenerator extends Command
             label: 'Please input your table name you went to create CRUD?',
             options: fn (string $value) => strlen($value) > 0
                 ? collect($tables)->filter(function ($item, $key) use ($value){
-                    return Str::contains($item, $value) ? $item : null;
+                    return Str::contains($item, $value) ? (string)$item : null;
                 })->toArray()
                 : [],
             placeholder: "ex: users",
-            validate: fn (string $value) => match (true) {
-                (!\Illuminate\Support\Facades\Schema::hasTable($tables[$value] ?? null)) => "Sorry table not found!",
-                default => null
-            },
             scroll: 10
         );
 
-        $tableName = $tables[$tableName];
+        if(is_numeric($tableName)){
+            $tableName = $tables[$tableName];
+        }
+        else {
+            $tableName = $tableName;
+        }
 
         //Check if user need to use HMVC
         $isModule = confirm('Do you went to use HMVC module?');

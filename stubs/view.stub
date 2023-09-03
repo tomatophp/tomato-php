@@ -1,5 +1,5 @@
 <x-tomato-admin-container label="{{trans('tomato-admin::global.crud.view')}} {{__('{{ table }}')}} #{{$model->id}}">
-    <div class="grid grid-cols-1 lg:grid-cols-2">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
         {{ cols }}
     </div>
     <div class="flex justify-start gap-2 pt-3">

@@ -7,9 +7,17 @@ use Illuminate\Support\Str;
 
 trait GenerateForm
 {
-    private function generateViewItem(string $name,string $value=null): string
+    private function generateViewItem(string $name,string $value=null, string $type="text"): string
     {
-        $form = '<x-tomato-admin-row label="{{__("'.Str::ucfirst(str_replace('_', ' ', $name)).'")}}" :value="$model->".$value?:$name."" />'.PHP_EOL;
+        $text = "";
+        if($value){
+            $text = value;
+        }
+        else {
+            $text = $name;
+        }
+
+        $form = '<x-tomato-admin-row :label="__(\''.Str::ucfirst(str_replace('_', ' ', $name)).'\')" :value="$model->'.$text.'" type="'.$type.'" />'.PHP_EOL;
         return $form;
     }
 
@@ -23,12 +31,12 @@ trait GenerateForm
             if(
                 $item['type'] === 'string' ||
                 $item['type'] === 'email' ||
-                $item['type'] === 'tel' ||
+                $item['type'] === 'icon' ||
                 ($item['name'] === 'password' && !$view)
             ){
                 $type = $item['type'] === 'string' ? 'text' : $item['type'];
                 if($view){
-                    $form .= $this->generateViewItem($item['name']);
+                    $form .= $this->generateViewItem($item['name'],null, $item['type']);
                 }
                 else {
                     $form .= "<x-splade-input :label=\"__('".Str::ucfirst(str_replace('_', ' ', $item['name']))."')\" name=\"{$item['name']}\" type=\"".$type."\"  :placeholder=\"__('".Str::ucfirst(str_replace('_', ' ', $item['name']))."')\" />";
@@ -47,7 +55,7 @@ trait GenerateForm
             }
             if($item['type'] === 'longText'){
                 if($view){
-                    $form .= $this->generateViewItem($item['name']);
+                    $form .= $this->generateViewItem($item['name'], null, "rich");
                 }
                 else {
                     $form .= "<x-tomato-admin-rich :label=\"__('".Str::ucfirst(str_replace('_', ' ', $item['name']))."')\" name=\"{$item['name']}\" :placeholder=\"__('".Str::ucfirst(str_replace('_', ' ', $item['name']))."')\" autosize />";
@@ -55,7 +63,7 @@ trait GenerateForm
             }
             if($item['type'] === 'int'){
                 if($view){
-                    $form .= $this->generateViewItem($item['name']);
+                    $form .= $this->generateViewItem($item['name'], null, "number");
                 }
                 else {
                     $form .= "<x-splade-input :label=\"__('".Str::ucfirst(str_replace('_', ' ', $item['name']))."')\" :placeholder=\"__('".Str::ucfirst(str_replace('_', ' ', $item['name']))."')\" type='number' name=\"{$item['name']}\" />";
@@ -63,7 +71,7 @@ trait GenerateForm
             }
             if($item['type'] === 'color'){
                 if($view){
-                    $form .= $this->generateViewItem($item['name']);
+                    $form .= $this->generateViewItem($item['name'], null, "color");
                 }
                 else {
                     $form .= "<x-tomato-admin-color :label=\"__('".Str::ucfirst(str_replace('_', ' ', $item['name']))."')\" :placeholder=\"__('".Str::ucfirst(str_replace('_', ' ', $item['name']))."')\" type='number' name=\"{$item['name']}\" />";
@@ -71,10 +79,10 @@ trait GenerateForm
             }
             if($item['type'] === 'tel'){
                 if($view){
-                    $form .= $this->generateViewItem($item['name']);
+                    $form .= $this->generateViewItem($item['name'], null, "tel");
                 }
                 else {
-                    $form .= "<x-splade-input :label=\"__('".Str::ucfirst(str_replace('_', ' ', $item['name']))."')\" :placeholder=\"__('".Str::ucfirst(str_replace('_', ' ', $item['name']))."')\" type='tel' name=\"{$item['name']}\" />";
+                    $form .= "<x-tomato-admin-tel :label=\"__('".Str::ucfirst(str_replace('_', ' ', $item['name']))."')\" :placeholder=\"__('".Str::ucfirst(str_replace('_', ' ', $item['name']))."')\" type='tel' name=\"{$item['name']}\" />";
                 }
             }
             if($item['type'] === 'relation'){
@@ -113,7 +121,7 @@ trait GenerateForm
             }
             if($item['type'] === 'boolean'){
                 if($view){
-                    $form .= $this->generateViewItem($item['name']);
+                    $form .= $this->generateViewItem($item['name'], null, "bool");
                 }
                 else {
                     $form .= "<x-splade-checkbox :label=\"__('".Str::ucfirst(str_replace('_', ' ', $item['name']))."')\" name=\"".$item['name']."\" label=\"".Str::ucfirst(str_replace('_', ' ', $item['name']))."\" />";

@@ -22,7 +22,7 @@ class {{ name }} extends Controller
      * @param Request $request
      * @return View|JsonResponse
      */
-    public function index(Request $request): View
+    public function index(Request $request): View|JsonResponse
     {
         return Tomato::index(
             request: $request,
@@ -131,7 +131,7 @@ class {{ name }} extends Controller
      */
     public function destroy({{ model }} $model): RedirectResponse|JsonResponse
     {
-        return Tomato::destroy(
+        $response = Tomato::destroy(
             model: $model,
             message: __('{{ title }} deleted successfully'),
             redirect: 'admin.{{ table }}.index',

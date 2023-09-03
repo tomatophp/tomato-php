@@ -19,7 +19,7 @@ trait GenerateIndexView
             $this->stubPath . "index.stub",
             $this->moduleName ? module_path($this->moduleName) . "/Resources/views/".str_replace('_', '-', $this->tableName)."/index.blade.php" : resource_path("views/admin/".Str::replace('_', '-',$this->tableName)."/index.blade.php"),
             [
-                "bool" => $this->getBool(),
+                "cells" => $this->getCells(),
                 "title" => $this->modelName,
                 "table" => str_replace('_', '-', $this->tableName),
                 "modelClass" => $this->moduleName ? "\\Modules\\".$this->moduleName."\\Entities\\".$this->modelName : "\\App\\Models\\".$this->modelName,
@@ -34,22 +34,46 @@ trait GenerateIndexView
     /**
      * @return string
      */
-    private function getBool(): string
+    private function getCells(): string
     {
-        $bool = "";
+        $cell = "";
         foreach ($this->cols as $field){
+            if($field['type'] == 'longText'){
+                $cell .= '<x-splade-cell '. $field['name'] .'>'.PHP_EOL;
+                $cell .= '    <x-tomato-admin-row table :value="$item->'.$field['name'].'" />'.PHP_EOL;
+                $cell .= '</x-splade-cell>'.PHP_EOL;
+            }
             if($field['type'] == 'boolean'){
-                $bool .= '<x-splade-cell '. $field['name'] .'>'.PHP_EOL;
-                $bool .= '    <h3 class="text-lg">'.PHP_EOL;
-                $bool .= '      @if($item->'.$field['name'].')'.PHP_EOL;
-                $bool .= '        <x-heroicon-s-check-circle class="text-green-500 w-8 h-8"/>'.PHP_EOL;
-                $bool .= '      @else'.PHP_EOL;
-                $bool .= '        <x-heroicon-s-x-circle class="text-red-500 w-8 h-8"/>'.PHP_EOL;
-                $bool .= '      @endif'.PHP_EOL;
-                $bool .= '    </h3>'.PHP_EOL;
-                $bool .= '</x-splade-cell>'.PHP_EOL;
+                $cell .= '<x-splade-cell '. $field['name'] .'>'.PHP_EOL;
+                $cell .= '    <x-tomato-admin-row table type="bool" :value="$item->'.$field['name'].'" />'.PHP_EOL;
+                $cell .= '</x-splade-cell>'.PHP_EOL;
+            }
+            if($field['type'] == 'email'){
+                $cell .= '<x-splade-cell '. $field['name'] .'>'.PHP_EOL;
+                $cell .= '    <x-tomato-admin-row table type="email" :value="$item->'.$field['name'].'" />'.PHP_EOL;
+                $cell .= '</x-splade-cell>'.PHP_EOL;
+            }
+            if($field['type'] == 'tel'){
+                $cell .= '<x-splade-cell '. $field['name'] .'>'.PHP_EOL;
+                $cell .= '    <x-tomato-admin-row table type="tel" :value="$item->'.$field['name'].'" />'.PHP_EOL;
+                $cell .= '</x-splade-cell>'.PHP_EOL;
+            }
+            if($field['type'] == 'int'){
+                $cell .= '<x-splade-cell '. $field['name'] .'>'.PHP_EOL;
+                $cell .= '    <x-tomato-admin-row table type="number" :value="$item->'.$field['name'].'" />'.PHP_EOL;
+                $cell .= '</x-splade-cell>'.PHP_EOL;
+            }
+            if($field['name'] == 'color'){
+                $cell .= '<x-splade-cell '. $field['name'] .'>'.PHP_EOL;
+                $cell .= '    <x-tomato-admin-row table type="color" :value="$item->'.$field['name'].'" />'.PHP_EOL;
+                $cell .= '</x-splade-cell>'.PHP_EOL;
+            }
+            if($field['name'] == 'icon'){
+                $cell .= '<x-splade-cell '. $field['name'] .'>'.PHP_EOL;
+                $cell .= '    <x-tomato-admin-row table type="icon" :value="$item->'.$field['name'].'" />'.PHP_EOL;
+                $cell .= '</x-splade-cell>'.PHP_EOL;
             }
         }
-        return $bool;
+        return $cell;
     }
 }

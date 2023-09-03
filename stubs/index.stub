@@ -11,6 +11,7 @@
     <div class="pb-12">
         <div class="mx-auto">
             <x-splade-table :for="$table" striped>
+                {{ cells }}
                 <x-splade-cell actions>
                     <div class="flex justify-start">
                         <x-tomato-admin-button success type="icon" title="{{trans('tomato-admin::global.crud.view')}}" modal :href="route('admin.{{ table }}.show', $item->id)">
