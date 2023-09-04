@@ -41,6 +41,6 @@
         "tomatophp/tomato-admin": "^1.1",
         "tomatophp/console-helpers": "^1.1",
         "tomatophp/tomato-model-generator": "^1.0",
-        "laravel/prompts": "^v0.1",
+        "laravel/prompts": "^v0.1"
     }
 }
