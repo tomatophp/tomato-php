@@ -11,7 +11,7 @@ trait GenerateForm
     {
         $text = "";
         if($value){
-            $text = value;
+            $text = $value;
         }
         else {
             $text = $name;
