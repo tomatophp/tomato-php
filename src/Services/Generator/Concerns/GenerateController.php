@@ -2,12 +2,19 @@
 
 namespace TomatoPHP\TomatoPHP\Services\Generator\Concerns;
 
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Str;
 
 trait GenerateController
 {
-    private function generateController()
+    private function generateController(bool $isForce = false)
     {
+        $filePath = $this->moduleName ? module_path($this->moduleName) ."/Http/Controllers/{$this->modelName}Controller.php" : app_path("Http/Controllers/Admin/{$this->modelName}Controller.php");
+        if($isForce){
+            if(File::exists($filePath)){
+                File::delete($filePath);
+            }
+        }
         $this->generateStubs(
             $this->stubPath . "controller.stub",
             $this->moduleName ? module_path($this->moduleName) ."/Http/Controllers/{$this->modelName}Controller.php" : app_path("Http/Controllers/Admin/{$this->modelName}Controller.php"),

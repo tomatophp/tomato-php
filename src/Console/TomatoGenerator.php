@@ -24,7 +24,12 @@ class TomatoGenerator extends Command
      *
      * @var string
      */
-    protected $name = 'tomato:generate';
+    protected $signature = 'tomato:generate
+        {table=0}
+        {module=0}
+        {--builder}
+        {--only-controllers}
+    ';
 
     /**
      * The console command description.
@@ -44,7 +49,7 @@ class TomatoGenerator extends Command
             return $item->{'Tables_in_'.config('database.connections.mysql.database')};
         })->toArray();
 
-        $tableName = search(
+        $tableName = $this->argument('table') && $this->argument('table') != "0" ? $this->argument('table') : search(
             label: 'Please input your table name you went to create CRUD?',
             options: fn (string $value) => strlen($value) > 0
                 ? collect($tables)->filter(function ($item, $key) use ($value){
@@ -63,14 +68,14 @@ class TomatoGenerator extends Command
         }
 
         //Check if user need to use HMVC
-        $isModule = confirm('Do you went to use HMVC module?');
+        $isModule = $this->argument('module') && $this->argument('module') != "0" ?: confirm('Do you went to use HMVC module?');
         $moduleName = false;
         if ($isModule){
             if (class_exists(\Nwidart\Modules\Facades\Module::class)){
                 $modules = \Nwidart\Modules\Facades\Module::toCollection()->map(function ($item){
                     return $item->getName();
                 });
-                $moduleName = suggest(
+                $moduleName = $this->argument('module') && $this->argument('module') != "0"  ?: suggest(
                     label:'Please input your module name?',
                     placeholder:'Translations',
                     options: fn (string $value) => strlen($value) > 0
@@ -104,7 +109,7 @@ class TomatoGenerator extends Command
             }
         }
 
-        $isBuilder = select(
+        $isBuilder = $this->option('builder') && $this->option('builder') != "0" ? $this->option('builder') : select(
             label: 'Do you went to use Form Builder?',
             options: ["form", "file"],
             default: "file",
@@ -114,9 +119,14 @@ class TomatoGenerator extends Command
             }
         );
 
+        $onlyController = $this->option('only-controllers') && $this->option('only-controllers') != "0" ? $this->option('only-controllers') : confirm(
+            label: 'Do you went to generate controllers Only?',
+        );
+
+
         //Generate CRUD Service
         try {
-            $resourceGenerator = new CRUDGenerator(tableName:$tableName,moduleName:$moduleName,isBuilder: $isBuilder);
+            $resourceGenerator = new CRUDGenerator(tableName:$tableName,moduleName:$moduleName,isBuilder: $isBuilder, isOnlyController: $onlyController);
             $resourceGenerator->generate();
             info('CRUD Has Been Generated Success');
         } catch (\Exception $e) {

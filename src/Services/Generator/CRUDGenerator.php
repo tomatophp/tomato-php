@@ -60,7 +60,8 @@ class CRUDGenerator
     public function __construct(
         private string $tableName,
         private string | bool | null $moduleName,
-        private string $isBuilder
+        private string $isBuilder,
+        private bool $isOnlyController
     ){
         $connectionParams = [
             'dbname' => config('database.connections.mysql.database'),
@@ -81,21 +82,27 @@ class CRUDGenerator
      */
     public function generate(): void
     {
-        $this->generateFolders();
-        $this->generateModel();
-        $this->generateTable();
-        ($this->isBuilder == 'form')?$this->generateControllerForBuilder():$this->generateController();
-        $this->generateRoutes();
-        $this->generateIndexView();
-        if ($this->isBuilder == 'form'){
-            $this->generateFormView();
-            $this->generateFormBuilderClass();
-
-        }else{
-            $this->generateCreateView();
-            $this->generateEditView();
+        if($this->isOnlyController){
+            ($this->isBuilder == 'form')?$this->generateControllerForBuilder():$this->generateController(true);
         }
-        $this->generateShowView();
+        else {
+            $this->generateFolders();
+            $this->generateModel();
+            $this->generateTable();
+            ($this->isBuilder == 'form')?$this->generateControllerForBuilder():$this->generateController();
+            $this->generateRoutes();
+            $this->generateIndexView();
+            if ($this->isBuilder == 'form'){
+                $this->generateFormView();
+                $this->generateFormBuilderClass();
+
+            }else{
+                $this->generateCreateView();
+                $this->generateEditView();
+            }
+            $this->generateShowView();
+        }
+
     }
 
 }
