@@ -68,14 +68,14 @@ class TomatoGenerator extends Command
         }
 
         //Check if user need to use HMVC
-        $isModule = $this->argument('module') && $this->argument('module') != "0" ?: confirm('Do you went to use HMVC module?');
+        $isModule = ($this->argument('module') && $this->argument('module') != "0") ?: confirm('Do you went to use HMVC module?');
         $moduleName = false;
         if ($isModule){
             if (class_exists(\Nwidart\Modules\Facades\Module::class)){
                 $modules = \Nwidart\Modules\Facades\Module::toCollection()->map(function ($item){
                     return $item->getName();
                 });
-                $moduleName = $this->argument('module') && $this->argument('module') != "0"  ?: suggest(
+                $moduleName = ($this->argument('module') && $this->argument('module') != "0") ? $this->argument('module') : suggest(
                     label:'Please input your module name?',
                     placeholder:'Translations',
                     options: fn (string $value) => strlen($value) > 0
