@@ -92,7 +92,7 @@ trait GenerateForm
                 }
                 else {
                     $itemLable=($item['relation']['relationColumnType'] == 'json')?'name.'.app()->getLocale():'name';
-                    $form .= "<x-splade-select :label=\"__('".Str::ucfirst(str_replace('_', ' ', $item['name']))."')\" :placeholder=\"__('".Str::ucfirst(str_replace('_', ' ', $item['name']))."')\" name=\"".$item['name']."\" remote-url=\"/admin/".$item['relation']['table']."/api\" remote-root=\"model.data\" option-label=$itemLable option-value=\"id\" choices/>";
+                    $form .= "<x-splade-select :label=\"__('".Str::ucfirst(str_replace('_', ' ', $item['name']))."')\" :placeholder=\"__('".Str::ucfirst(str_replace('_', ' ', $item['name']))."')\" name=\"".$item['name']."\" remote-url=\"/admin/".$item['relation']['table']."/api\" remote-root=\"data\" option-label=\"$itemLable\" option-value=\"id\" choices/>";
                 }
             }
             if($item['type'] === 'date'){
