@@ -16,7 +16,7 @@ trait GenerateModel
             }
         }
         else if(!file_exists(app_path("Models/{$this->modelName}.php"))){
-            $command = 'krlove:generate:model ' . $this->modelName . ' --table-name=' . $this->tableName . ' --output-path=' . app_path('/Models') . ' --namespace=' . "\\App\\\\Models\\";
+            $command = 'krlove:generate:model ' . $this->modelName . ' --table-name=' . $this->tableName . ' --output-path=' . 'Models' . ' --namespace=' . "\\App\\\\Models\\";
         }
 
         if(isset($command))
