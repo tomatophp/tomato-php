@@ -31,7 +31,6 @@ trait GenerateForm
             if(
                 $item['type'] === 'string' ||
                 $item['type'] === 'email' ||
-                $item['type'] === 'icon' ||
                 ($item['name'] === 'password' && !$view)
             ){
                 $type = $item['type'] === 'string' ? 'text' : $item['type'];
@@ -74,15 +73,15 @@ trait GenerateForm
                     $form .= $this->generateViewItem($item['name'], null, "color");
                 }
                 else {
-                    $form .= "<x-tomato-admin-color :label=\"__('".Str::ucfirst(str_replace('_', ' ', $item['name']))."')\" :placeholder=\"__('".Str::ucfirst(str_replace('_', ' ', $item['name']))."')\" type='number' name=\"{$item['name']}\" />";
+                    $form .= "<x-tomato-admin-color :label=\"__('".Str::ucfirst(str_replace('_', ' ', $item['name']))."')\" :placeholder=\"__('".Str::ucfirst(str_replace('_', ' ', $item['name']))."')\" name=\"{$item['name']}\" />";
                 }
             }
-            if($item['type'] === 'tel'){
+            if($item['type'] === 'icon'){
                 if($view){
-                    $form .= $this->generateViewItem($item['name'], null, "tel");
+                    $form .= $this->generateViewItem($item['name'], null, "icon");
                 }
                 else {
-                    $form .= "<x-tomato-admin-tel :label=\"__('".Str::ucfirst(str_replace('_', ' ', $item['name']))."')\" :placeholder=\"__('".Str::ucfirst(str_replace('_', ' ', $item['name']))."')\" type='tel' name=\"{$item['name']}\" />";
+                    $form .= "<x-tomato-admin-icon :label=\"__('".Str::ucfirst(str_replace('_', ' ', $item['name']))."')\" :placeholder=\"__('".Str::ucfirst(str_replace('_', ' ', $item['name']))."')\" name=\"{$item['name']}\" />";
                 }
             }
             if($item['type'] === 'relation'){
@@ -92,7 +91,7 @@ trait GenerateForm
                 }
                 else {
                     $itemLable=($item['relation']['relationColumnType'] == 'json')?'name.'.app()->getLocale():'name';
-                    $form .= "<x-splade-select :label=\"__('".Str::ucfirst(str_replace('_', ' ', $item['name']))."')\" :placeholder=\"__('".Str::ucfirst(str_replace('_', ' ', $item['name']))."')\" name=\"".$item['name']."\" remote-url=\"/admin/".$item['relation']['table']."/api\" remote-root=\"data\" option-label=\"$itemLable\" option-value=\"id\" choices/>";
+                    $form .= "<x-splade-select :label=\"__('".Str::ucfirst(str_replace('_', ' ', $item['name']))."')\" :placeholder=\"__('".Str::ucfirst(str_replace('_', ' ', $item['name']))."')\" name=\"".$item['name']."\" :remote-url=\"route('admin.".$item['relation']['table'].".api')\" remote-root=\"data\" option-label=\"$itemLable\" option-value=\"id\" choices/>";
                 }
             }
             if($item['type'] === 'date'){
@@ -124,7 +123,7 @@ trait GenerateForm
                     $form .= $this->generateViewItem($item['name'], null, "bool");
                 }
                 else {
-                    $form .= "<x-splade-checkbox :label=\"__('".Str::ucfirst(str_replace('_', ' ', $item['name']))."')\" name=\"".$item['name']."\" label=\"".Str::ucfirst(str_replace('_', ' ', $item['name']))."\" />";
+                    $form .= "<x-splade-checkbox :label=\"__('".Str::ucfirst(str_replace('_', ' ', $item['name']))."')\" name=\"".$item['name']."\" />";
                 }
             }
             if($item['type'] === 'json' && ($item['name']== 'name' ||$item['name']== 'title'|| $item['name']== 'description')){
@@ -132,9 +131,7 @@ trait GenerateForm
                     $form .= $this->generateViewItem($item['name']);
                 }
                 else {
-                    $form .= "<x-splade-input :label=\"__('".Str::ucfirst(str_replace('_', ' ', $item['name']))."-EN')\" :placeholder=\"__('".Str::ucfirst(str_replace('_', ' ', $item['name']))."-en')\" name=\"".$item['name'].".en\" type='text' />";
-                    $form .= PHP_EOL;
-                    $form .= "<x-splade-input :label=\"__('".Str::ucfirst(str_replace('_', ' ', $item['name']))."-AR')\" :placeholder=\"__('".Str::ucfirst(str_replace('_', ' ', $item['name']))."-ar')\" name=\"".$item['name'].".ar\" type='text' />";
+                    $form .= "<x-tomato-translation :label=\"__('".Str::ucfirst(str_replace('_', ' ', $item['name']))."-EN')\" :placeholder=\"__('".Str::ucfirst(str_replace('_', ' ', $item['name']))."')\" name=\"".$item['name']."\" />";
 
                 }
             }

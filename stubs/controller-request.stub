@@ -22,7 +22,7 @@ class {{ name }} extends Controller
      * @param Request $request
      * @return View|JsonResponse
      */
-    public function index(Request $request): View
+    public function index(Request $request): View|JsonResponse
     {
         return Tomato::index(
             request: $request,
@@ -50,23 +50,19 @@ class {{ name }} extends Controller
     public function create(): View
     {
         return Tomato::create(
-            view: '{{ modulePath }}{{ table }}.form',
-            data: ['form'=>{{ formClass }}::class]
+            view: '{{ modulePath }}{{ table }}.create',
         );
     }
 
     /**
-     * @param Request $request
+     * @param {{ requestNamespace }}{{ title }}StoreRequest $request
      * @return RedirectResponse|JsonResponse
      */
-    public function store(Request $request): RedirectResponse|JsonResponse
+    public function store({{ requestNamespace }}{{ title }}StoreRequest $request): RedirectResponse|JsonResponse
     {
         $response = Tomato::store(
             request: $request,
             model: {{ model }}::class,
-            validation: [
-                {{ validation }}
-            ],
             message: __('{{ title }} updated successfully'),
             redirect: 'admin.{{ table }}.index',
         );
@@ -96,29 +92,22 @@ class {{ name }} extends Controller
      */
     public function edit({{ model }} $model): View
     {
-        {{ formClass }}::$model=$model;
-        {{ formClass }}::$route="admin.{{ table }}.update";
-
         return Tomato::get(
             model: $model,
-            view: '{{ modulePath }}{{ table }}.form',
-            data: ['form'=>{{ formClass }}::class]
+            view: '{{ modulePath }}{{ table }}.edit',
         );
     }
 
     /**
-     * @param Request $request
+     * @param {{ requestNamespace }}{{ title }}UpdateRequest $request
      * @param {{ model }} $model
      * @return RedirectResponse|JsonResponse
      */
-    public function update(Request $request, {{ model }} $model): RedirectResponse|JsonResponse
+    public function update({{ requestNamespace }}{{ title }}UpdateRequest $request, {{ model }} $model): RedirectResponse|JsonResponse
     {
         $response = Tomato::update(
             request: $request,
             model: $model,
-            validation: [
-                {{ validationEdit }}
-            ],
             message: __('{{ title }} updated successfully'),
             redirect: 'admin.{{ table }}.index',
         );

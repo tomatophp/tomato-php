@@ -19,7 +19,9 @@ trait GenerateCols
         foreach ($columns->getColumns() as $column) {
 
             if (Str::of($column->getName())->endsWith([
-                '_at',
+                'created_at',
+                'updated_at',
+                'deleted_at',
                 '_token',
             ])) {
                 continue;
@@ -90,7 +92,7 @@ trait GenerateCols
                     try {
                         $componentData['relation']['relationColumnType']=\Illuminate\Support\Facades\Schema::getColumnType($componentData['relation']['table'],$componentData['relation']['relationColumn']);
                     }catch (\Exception $e) {}
-                    
+
                     $componentData['type'] = 'relation';
                 }
             }

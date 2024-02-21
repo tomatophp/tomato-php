@@ -10,21 +10,19 @@ trait GenerateTable
     {
         $this->generateStubs(
             $this->stubPath . "table.stub",
-            $this->moduleName ? module_path($this->moduleName). "/Tables/{$this->modelName}Table.php" : app_path("Tables/{$this->modelName}Table.php"),
+            $this->moduleName ? module_path($this->moduleName). "/App/Tables/{$this->modelName}Table.php" : app_path("Tables/{$this->modelName}Table.php"),
             [
                 "name" => "{$this->modelName}Table",
                 "title" => $this->modelName,
-                "model" => $this->moduleName ? "\\Modules\\".$this->moduleName."\\Entities\\".$this->modelName :"\\App\\Models\\".$this->modelName,
+                "model" => $this->moduleName ? "\\Modules\\".$this->moduleName."\\App\\Models\\".$this->modelName :"\\App\\Models\\".$this->modelName,
                 "searchable" => $this->generateSearchable(),
                 "cols" => $this->generateCols(),
-                "namespace" => $this->moduleName ? "Modules\\".$this->moduleName."\\Tables" : "App\\Tables",
+                "namespace" => $this->moduleName ? "Modules\\".$this->moduleName."\\App\\Tables" : "App\\Tables",
             ],
             [
-                $this->moduleName ? module_path($this->moduleName)."/Tables" : app_path("Tables")
+                $this->moduleName ? module_path($this->moduleName)."/App/Tables" : app_path("Tables")
             ]
         );
-
-        \Laravel\Prompts\info("Table Class Generate Success");
     }
 
     private function generateSearchable(): string

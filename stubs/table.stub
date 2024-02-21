@@ -15,7 +15,7 @@ class {{ name }} extends AbstractTable
      *
      * @return void
      */
-    public function __construct(public mixed $query=null)
+    public function __construct(public $query=null)
     {
         if(!$query){
             $this->query = {{ model }}::query();

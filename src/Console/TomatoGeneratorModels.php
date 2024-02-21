@@ -16,7 +16,7 @@ use function Laravel\Prompts\error;
 use function Laravel\Prompts\warning;
 use function Laravel\Prompts\suggest;
 
-class TomatoGenerator extends Command
+class TomatoGeneratorModels extends Command
 {
     use RunCommand;
     /**
@@ -24,11 +24,9 @@ class TomatoGenerator extends Command
      *
      * @var string
      */
-    protected $signature = 'tomato:generate
+    protected $signature = 'tomato:models
         {table=0}
         {module=0}
-        {--api}
-        {--builder}
     ';
 
     /**
@@ -36,7 +34,7 @@ class TomatoGenerator extends Command
      *
      * @var string
      */
-    protected $description = 'create a new CRUD for the application by tomato';
+    protected $description = 'generate models for the application by tomato';
 
 
     /**
@@ -111,21 +109,22 @@ class TomatoGenerator extends Command
             }
         }
 
-        $generateAPI = ($this->option('api') && $this->option('api') != "0") ? $this->option('api') : confirm(
-            label: 'Do you went to generate api routes?',
-        );
-
-        $generateForm = ($this->option('builder') && $this->option('builder') != "0") ? $this->option('builder') : confirm(
-            label: 'Do you went to use form class builder?',
-        );
 
         //Generate CRUD Service
         try {
             \Laravel\Prompts\spin(fn()=> (new CRUDGenerator(
                 tableName:$tableName,
                 moduleName:$moduleName,
-                apiRoutes: $generateAPI,
-                form: $generateForm,
+                models: true,
+                views: false,
+                routes: false,
+                tables: false,
+                controllers: false,
+                request: false,
+                json: false,
+                apiRoutes: false,
+                form: false,
+                menu: false,
             ))->generate(), 'Generating ...');
         } catch (\Exception $e) {
             \Laravel\Prompts\error($e);
