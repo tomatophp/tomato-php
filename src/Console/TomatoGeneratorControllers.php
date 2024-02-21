@@ -16,7 +16,7 @@ use function Laravel\Prompts\error;
 use function Laravel\Prompts\warning;
 use function Laravel\Prompts\suggest;
 
-class TomatoGenerator extends Command
+class TomatoGeneratorControllers extends Command
 {
     use RunCommand;
     /**
@@ -24,11 +24,11 @@ class TomatoGenerator extends Command
      *
      * @var string
      */
-    protected $signature = 'tomato:generate
+    protected $signature = 'tomato:controllers
         {table=0}
         {module=0}
-        {--api}
-        {--builder}
+        {--request}
+        {--resource}
     ';
 
     /**
@@ -36,7 +36,7 @@ class TomatoGenerator extends Command
      *
      * @var string
      */
-    protected $description = 'create a new CRUD for the application by tomato';
+    protected $description = 'generate controllers for the application by tomato';
 
 
     /**
@@ -111,21 +111,30 @@ class TomatoGenerator extends Command
             }
         }
 
-        $generateAPI = ($this->option('api') && $this->option('api') != "0") ? $this->option('api') : confirm(
-            label: 'Do you went to generate api routes?',
+        $generateRequest = ($this->option('request') && $this->option('request') != "0") ? $this->option('request') : confirm(
+            label: 'Do you went to generate form request?',
         );
 
-        $generateForm = ($this->option('builder') && $this->option('builder') != "0") ? $this->option('builder') : confirm(
-            label: 'Do you went to use form class builder?',
+        $generateResource = ($this->option('resource') && $this->option('resource') != "0") ? $this->option('resource') : confirm(
+            label: 'Do you went to generate json resource?',
         );
+
 
         //Generate CRUD Service
         try {
             \Laravel\Prompts\spin(fn()=> (new CRUDGenerator(
                 tableName:$tableName,
                 moduleName:$moduleName,
-                apiRoutes: $generateAPI,
-                form: $generateForm,
+                models: false,
+                views: false,
+                routes: false,
+                tables: false,
+                controllers: true,
+                request: $generateRequest,
+                json: $generateResource,
+                apiRoutes: false,
+                form: false,
+                menu: false,
             ))->generate(), 'Generating ...');
         } catch (\Exception $e) {
             \Laravel\Prompts\error($e);

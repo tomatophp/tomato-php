@@ -11,14 +11,15 @@ trait GenerateFormView
     {
         $folders = [];
         if ($this->moduleName) {
-            $folders[] = module_path($this->moduleName) . "/Resources/views/" . Str::replace('_', '-',$this->tableName);
+            $folders[] = module_path($this->moduleName) . "/resources/views/" . Str::replace('_', '-',$this->tableName);
         } else {
-            $folders[] = resource_path("views/" . Str::replace('_', '-',$this->tableName));
+            $folders[] = resource_path("views/admin");
+            $folders[] = resource_path("views/admin/" . Str::replace('_', '-',$this->tableName));
         }
 
         $this->generateStubs(
-            "vendor/tomatophp/tomato-php/stubs/FormBuilder/Form.stub",
-            $this->moduleName ? module_path($this->moduleName) . "/Resources/views/" . str_replace('_', '-', $this->tableName) . "/form.blade.php" : resource_path("views/admin/".Str::replace('_', '-',$this->tableName)."/form.blade.php"),
+            $this->stubPath ."FormBuilder/Form.stub",
+            $this->moduleName ? module_path($this->moduleName) . "/resources/views/" . str_replace('_', '-', $this->tableName) . "/form.blade.php" : resource_path("views/admin/".Str::replace('_', '-',$this->tableName)."/form.blade.php"),
             [
                 "title" => $this->modelName,
                 "table" => str_replace('_', '-', $this->tableName),
@@ -26,27 +27,23 @@ trait GenerateFormView
             ],
             $folders
         );
-
-        \Laravel\Prompts\info("Form Generate Success");
     }
 
     private function generateFormBuilderClass()
     {
         $this->generateStubs(
-             "vendor/tomatophp/tomato-php/stubs/FormBuilder/FormClass.stub",
-            $this->moduleName ? module_path($this->moduleName) . "/Forms/{$this->modelName}Form.php" : app_path("Forms/{$this->modelName}Form.php"),
+            $this->stubPath ."FormBuilder/FormClass.stub",
+            $this->moduleName ? module_path($this->moduleName) . "/App/Forms/{$this->modelName}Form.php" : app_path("Forms/{$this->modelName}Form.php"),
             [
                 "name" => "{$this->modelName}Form",
                 "route" => str_replace('_', '-', $this->tableName),
                 "cols" => $this->generateFormElements(),
-                "namespace" => $this->moduleName ? "Modules\\" . $this->moduleName . "\\Forms" : "App\\Forms",
+                "namespace" => $this->moduleName ? "Modules\\" . $this->moduleName . "\\App\\Forms" : "App\\Forms",
             ],
             [
-                $this->moduleName ? module_path($this->moduleName) . "/Forms" : app_path("Forms")
+                $this->moduleName ? module_path($this->moduleName) . "/App/Forms" : app_path("Forms")
             ]
         );
-
-        \Laravel\Prompts\info("Form Class Generate Success");
     }
 
     private function generateFormElements(): string

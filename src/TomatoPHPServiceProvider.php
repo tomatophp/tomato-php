@@ -4,6 +4,13 @@ namespace TomatoPHP\TomatoPHP;
 
 use Illuminate\Support\ServiceProvider;
 use TomatoPHP\TomatoPHP\Console\TomatoGenerator;
+use TomatoPHP\TomatoPHP\Console\TomatoGeneratorControllers;
+use TomatoPHP\TomatoPHP\Console\TomatoGeneratorForm;
+use TomatoPHP\TomatoPHP\Console\TomatoGeneratorMenus;
+use TomatoPHP\TomatoPHP\Console\TomatoGeneratorModels;
+use TomatoPHP\TomatoPHP\Console\TomatoGeneratorRoutes;
+use TomatoPHP\TomatoPHP\Console\TomatoGeneratorTables;
+use TomatoPHP\TomatoPHP\Console\TomatoGeneratorViews;
 
 class TomatoPHPServiceProvider extends ServiceProvider
 {
@@ -20,7 +27,14 @@ class TomatoPHPServiceProvider extends ServiceProvider
         $this->loadTranslationsFrom(__DIR__.'/../resources/lang', 'tomato-php');
         $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
         $this->commands([
-            TomatoGenerator::class
+            TomatoGenerator::class,
+            TomatoGeneratorControllers::class,
+            TomatoGeneratorForm::class,
+            TomatoGeneratorModels::class,
+            TomatoGeneratorRoutes::class,
+            TomatoGeneratorTables::class,
+            TomatoGeneratorViews::class,
+            TomatoGeneratorMenus::class
         ]);
 
         //publish stubs to the base folder
