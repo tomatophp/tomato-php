@@ -16,7 +16,15 @@ trait GenerateModel
             }
         }
         else if(!file_exists(app_path("Models/{$this->modelName}.php"))){
-            $command = 'krlove:generate:model ' . $this->modelName . ' --table-name=' . $this->tableName . ' --output-path=' . app_path('/Models') . ' --namespace=' . "\\App\\\\Models\\";
+            if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
+                // If the platform is Windows
+                $outputPath = 'Models';
+            } else {
+                // For other platforms
+                $outputPath = app_path('/Models');
+            }
+
+            $command = 'krlove:generate:model ' . $this->modelName . ' --table-name=' . $this->tableName . ' --output-path=' . $outputPath . ' --namespace=' . "\\App\\Models\\";
         }
 
         if(isset($command))
