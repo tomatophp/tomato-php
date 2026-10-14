@@ -70,7 +70,7 @@ trait GenerateFormView
                 ->label(__('".Str::remove('_id',$item['name'])."'))
                 ->choices()
                 ->remoteUrl('/admin/".$item['relation']['table']."/api')
-                ->remoteRoute('model.data')
+                ->remoteRoot('data')
                 ->optionLabel('".$itemLable."')
                 ->optionValue('id'),";
              $form .= PHP_EOL;
